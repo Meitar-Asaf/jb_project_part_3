@@ -1,0 +1,26 @@
+# Stage 1: Build the React frontend
+FROM node:18 as frontend-builder
+
+WORKDIR /app/frontend
+
+COPY vacations-statistics-frontend/package*.json ./
+RUN npm install
+COPY vacations-statistics-frontend/ .
+RUN npm run build
+
+# Stage 2: Create the Django backend image
+FROM python:3.11-slim
+
+WORKDIR /app/backend
+
+COPY vacations_statistics_backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the Django backend code
+COPY vacations_statistics_backend/ .
+
+# Copy the built React app from the first stage
+COPY --from=frontend-builder /app/frontend/build /app/backend/static/frontend/
+
+# Expose the port where Django will run
+EXPOSE 8000
