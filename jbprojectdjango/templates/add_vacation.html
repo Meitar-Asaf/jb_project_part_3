@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="form-card">
+  {% if object %}
+  <h2>Update Vacation</h2>
+  {% else %}
+  <h2>Add Vacation</h2>
+  {% endif %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+    {% if field.name == "image" %}
+    {% if form.instance.image %}
+    <div class="image-container image-container-update">
+        <img src="{{ form.instance.image.url }}" alt="Image">
+        <div class = "image-container-container">{{ field }}</div>
+    </div>
+    {% else %}
+    {{ field }}
+    {% endif %}
+    {% else %}
+    
+        {{ field }}
+    
+    {% endif %}
+    {% endfor %}
+    {% if object %}
+    <br>
+    <button type="submit" class="btn-primary">Update Vacation</button>
+    {% else %}
+    <button type="submit" class="btn-primary">Add Vacation</button>
+    {% endif %}
+  </form>
+</div>
+
+{% endblock %}

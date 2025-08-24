@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="form-card">
+
+  <h2>
+    {% if form_type == "signup" %}
+    Create Your Account
+    {% elif form_type == "login" %} Log In to your account {% endif %}</h2>
+
+  <form method="post">
+    {% block form %}
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+        <div class="field-error">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+    {% for field in form.visible_fields %}
+    {% for error in field.errors %}
+      <div class="field-error">{{ error }}</div>
+    {% endfor %}
+    <div>
+      {{ field.label_tag }}
+      {% if field.name == "password"%}
+      <input type="password" name="{{ field.name }}" placeholder="{{ field.label }}" class="form-control" required/>
+      {% elif field.name == "email" or field.name == "username"%}
+      <input type="email" name="{{ field.name }}" placeholder="{{ field.label }}" class="form-control" required/>
+      
+      
+      {% endif %}
+
+      
+    </div>
+    
+    {% endfor %}
+    {% endblock form %}
+    <button type="submit" class="btn-primary">
+        {% if form_type == "signup" %}
+        Sign Up
+        {% elif form_type == "login" %} Log In {% endif %}
+    </button>
+  </form>
+
+  <p class="login-link">
+    {% if form_type == "signup" %}
+    Already have an account?
+    <a href=" {% url 'login' %}">Log in here</a>
+    {% elif form_type == "login" %} Don't have an account yet?
+    <a href=" {% url 'signup' %}">Sign up here</a>
+    {% endif %}
+  </p>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Home | Dreamy Vacations{% endblock %}
+
+{% block content %}
+
+<section class="title">
+    <div class="title-inner">
+        <h1>Your Next Dream Vacation Starts Here!</h1>
+        <p>The hottest destinations, the finest hotels — all for you.</p>
+    </div>
+</section>
+<section class="packages">
+    <h2>Our Popular Packages</h2>
+    <div class="featured-grid">
+        {% for vacation in vacations %}
+        <div class="card">
+            <div class="card-body">
+                <div class="image-container">
+                    <img src="{{ vacation.image.url }}" >
+                    <div class="overlay-text">
+                        {% if user.is_staff %}
+                        <a href="{% url 'delete_vacation' vacation.id %}" class="like-btn unliked">&#x1F5D1; Delete</a>
+                        <a href="{% url 'update_vacation' vacation.id %}" class="like-btn unliked">&#x270E;Update</a>
+                        {% else %}
+                        <form action="{% if vacation.liked %}{% url 'unlike_vacation' %}{% else %}{% url 'like_vacation' %}{% endif %}" method="post">
+                                {% csrf_token %}
+                            <button type="submit" class="{% if vacation.liked %}like-btn liked{% else %}like-btn unliked{% endif %}" name="vacation_id" value="{{ vacation.id }}">{% if vacation.liked %}❤️{% else %}&#129293;{% endif %}<span class="likes-count"> Likes {{ vacation.likes.count }}</span></button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+                <h3>{{ vacation.country}}</h3>
+                <br>
+                <p>{{ vacation.description }}</p>
+                <br>
+                <p>{{ vacation.start_date }} - {{ vacation.end_date }}</p>
+                <br>
+                <p>${{ vacation.price }}</p>
+            
+            
+            </div>
+            </div>
+        {% endfor %}
+        </div>
+        
+    </div>
+</section>
+
+{% endblock %}
