@@ -9,15 +9,22 @@ const LogIn = ({ onLoginSuccess }: LogInProps) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    /**
+     * Handles a login attempt by sending a POST request to the backend's
+     * /login/ endpoint. If the request is successful, it displays a success
+     * notification and calls the onLoginSuccess callback. If the request fails,
+     * it displays an error notification with the error message from the
+     * response if available, or a generic error message.
+     */
     const handleLogin = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:8000/api/users/login/",
+                "/api/users/login/",
                 { username, password },
                 { withCredentials: true }
             );
             notyf.success(`Login successful`);
-            onLoginSuccess(); // להפעיל אחרי login מוצלח
+            onLoginSuccess();
         } catch (error: any) {
             if (error && error.response && error.response.data && error.response.data.message) {
                 notyf.error(`Login failed: ${error.response.data.message}`);

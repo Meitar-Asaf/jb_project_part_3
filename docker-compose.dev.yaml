@@ -62,9 +62,7 @@ services:
             REACT_APP_API_URL: http://localhost:8000/
 
     nginx:
-      build:
-        context: ./jbprojectdjango
-        dockerfile: Dockerfile.nginx
+      image: meitarasaf/vacations_website_nginx_and_static_files:latest
       ports:
         - "80:80"
       depends_on:

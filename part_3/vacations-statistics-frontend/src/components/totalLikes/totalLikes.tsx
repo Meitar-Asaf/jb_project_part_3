@@ -2,8 +2,14 @@ import React, { useState, useEffect } from "react";
 import { LikesTotalCountProps } from "../../models/likesTotalCount/likesTotalCount";
 import axios from "axios";
 import { notyf } from "../../utils/notyf";
-import { GeneralProps } from "../likesDistribution/LikesDistribution";
-export const TotalLikesComponent: React.FC<GeneralProps> = ({ handleLogout }) => {
+/**
+ * A React component that displays the total number of likes.
+ * The component fetches the total likes from the backend when it mounts and
+ * displays them in a simple form. If the fetch fails, it displays an error
+ * message. If the total likes are null, it displays a message indicating that
+ * no total likes are available.
+ */
+export const TotalLikesComponent: React.FC = () => {
     const [totalLikes, setTotalLikes] = useState<LikesTotalCountProps | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -11,7 +17,7 @@ export const TotalLikesComponent: React.FC<GeneralProps> = ({ handleLogout }) =>
     useEffect(() => {
         const fetchTotalLikes = async () => {
             try {
-                const response = await axios.get<LikesTotalCountProps>("http://localhost:8000/api/likes/total/", { withCredentials: true });
+                const response = await axios.get<LikesTotalCountProps>("/api/likes/total/", { withCredentials: true });
                 const data = response.data;
                 setTotalLikes(data);
             } catch (err) {
@@ -33,7 +39,7 @@ export const TotalLikesComponent: React.FC<GeneralProps> = ({ handleLogout }) =>
 
     return (
         <div>
-            <p>{totalLikes?.total_likes === undefined || totalLikes?.total_likes === null || totalLikes === null ? "No likes available" : `Total likes: ${totalLikes.total_likes}`}</p>
+            <p>{totalLikes?.total_likes === undefined || totalLikes?.total_likes === null || totalLikes === null ? "No likes available" : <><h2>Total likes:</h2> {totalLikes.total_likes}</>}</p>
         </div>
     );
 }

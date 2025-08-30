@@ -3,11 +3,17 @@ import { LikesDistribution } from "../../models/likesDistribution/likesDistribut
 import axios from "axios";
 import { notyf } from "../../utils/notyf";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-export type GeneralProps = {
-    handleLogout: () => void;
-};
 
-export const LikesDistributionComponent: React.FC<GeneralProps> = ({ handleLogout }) => {
+/**
+ * A React component that displays the distribution of likes among countries.
+ *
+ * The component fetches the likes distribution from the backend when it mounts and
+ * displays them in a simple form. If the fetch fails, it displays an error
+ * message. If the likes distribution is null, it displays a message indicating that
+ * no likes distribution is available.
+ */
+
+export const LikesDistributionComponent: React.FC = () => {
     const [likesDistribution, setLikesDistribution] = useState<LikesDistribution[] | []>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -15,7 +21,7 @@ export const LikesDistributionComponent: React.FC<GeneralProps> = ({ handleLogou
     useEffect(() => {
         const fetchLikesDistribution = async () => {
             try {
-                const response = await axios.get<LikesDistribution[]>(`http://localhost:8000/api/likes/distribution/`, { withCredentials: true });
+                const response = await axios.get<LikesDistribution[]>(`/api/likes/distribution/`, { withCredentials: true });
                 const data = response.data;
                 setLikesDistribution(data);
             } catch (err) {

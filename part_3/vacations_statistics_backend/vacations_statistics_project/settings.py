@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mm4r1+m8*nz3iasf3-t^k%06p_a5=g*lbjxk0wc66#cb$)p*qi'
 
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False')
 
 ALLOWED_HOSTS = []
 
@@ -61,7 +61,6 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001"
-
 ]
 
 ROOT_URLCONF = 'vacations_statistics_project.urls'
@@ -126,6 +125,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "http://localhost:3001"
 ]
 
 STATIC_URL = '/static/'
@@ -140,13 +140,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # --- SESSION/CSRF/CROSS-ORIGIN SETTINGS ---
 if DEBUG:
     SESSION_COOKIE_SAMESITE = 'Lax'
-    SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SAMESITE = 'Lax'
-    CSRF_COOKIE_SECURE = True
 else:
     SESSION_COOKIE_SAMESITE = 'None'
-    SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SAMESITE = 'None'
-    CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 SESSION_COOKIE_DOMAIN = None
 CSRF_COOKIE_DOMAIN = None

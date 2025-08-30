@@ -7,6 +7,7 @@ import StatisticsPage from './components/statisticsPageComponent/statisticsPageC
 import About from './components/about/about';
 import Home from './components/home/home';
 import Cookies from 'js-cookie';
+
 import axios from 'axios';
 
 
@@ -20,7 +21,7 @@ function App() {
     React.useEffect(() => {
         const checkAuth = async () => {
             try {
-                const res = await axios.get('http://localhost:8000/api/users/is-authenticated/', { withCredentials: true });
+                const res = await axios.get('/api/users/is-authenticated/', { withCredentials: true });
                 setIsLoggedIn(res.data.isAuthenticated);
             } catch {
                 setIsLoggedIn(false);
@@ -43,7 +44,7 @@ function App() {
 
     const handleLogout = async () => {
         try {
-            await axios.post('http://localhost:8000/api/users/logout/', {}, {
+            await axios.post('/api/users/logout/', {}, {
                 withCredentials: true,
                 headers: { 'X-CSRFToken': Cookies.get('csrftoken') }
             });

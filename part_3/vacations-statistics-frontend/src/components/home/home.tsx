@@ -1,4 +1,10 @@
 import React from 'react';
+/**
+ * The Home component is the landing page of the application. It provides
+ * some general information about the project and a list of features that
+ * can be found in the application.
+ */
+
 const Home: React.FC = () => {
     return (
         <div className="home-container">
@@ -14,6 +20,7 @@ const Home: React.FC = () => {
                         <li><strong>Likes Distribution:</strong> View a chart showing how likes are distributed across different destinations.</li>
                         <li><strong>Vacations Statistics:</strong> Explore various statistics and insights about the vacations in the system.</li>
                         <li><strong>Total Users:</strong> See how many users are registered in the system.</li>
+                        <li><strong>Price Ranges:</strong> See how vacations count in different price ranges.</li>
                     </ul>
                     <p className="home-author">Created by Meitar Asaf, 2025</p>
                 </div>

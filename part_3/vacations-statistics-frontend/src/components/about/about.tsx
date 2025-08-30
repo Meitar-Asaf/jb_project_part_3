@@ -1,5 +1,10 @@
 import React from 'react';
 
+/**
+ * The About component is a simple page that displays some information about me.
+ * It includes a photo, my name, age, and a short description of my passion for technology and web development.
+ * This component is used as a route in the App component.
+ */
 const About: React.FC = () => {
     return (
         <div className="about-container">
@@ -7,7 +12,7 @@ const About: React.FC = () => {
             <div className="about-content">
                 <div className="about-image">
                     {/* Place your image here */}
-                    <img src="/path/to/your-image.jpg" alt="Meitar Asaf" style={{ width: '200px', borderRadius: '50%' }} />
+                    <img src="images/meitar_asaf.jpg" alt="Meitar Asaf" />
                 </div>
                 <div className="about-text">
                     <p>

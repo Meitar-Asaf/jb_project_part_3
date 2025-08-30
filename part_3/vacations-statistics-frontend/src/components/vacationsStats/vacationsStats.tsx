@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { VacationsStats } from "../../models/vacationsStats/vacationsStats";
 import axios from "axios";
 import { notyf } from "../../utils/notyf";
-import { GeneralProps } from "../likesDistribution/LikesDistribution";
-
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 /**
  * A React component that displays statistics about vacations in the
  * application, such as the number of past, ongoing, and future vacations.
@@ -12,14 +11,20 @@ import { GeneralProps } from "../likesDistribution/LikesDistribution";
  * message. If the statistics are null, it displays a message indicating that
  * no statistics are available.
  */
-const VacationsStatsComponent: React.FC<GeneralProps> = ({ handleLogout }) => {
+const VacationsStatsComponent: React.FC = () => {
     const [stats, setStats] = useState<VacationsStats | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     useEffect(() => {
+        /**
+         * Fetches the vacation statistics from the backend and updates the
+         * component state with the fetched data. If the fetch fails, it sets
+         * the error state to the error message. Finally, it sets the loading
+         * state to false.
+         */
         const fetchStats = async () => {
             try {
-                const response = await axios.get<VacationsStats>(`http://localhost:8000/api/vacations/stats/`, { withCredentials: true });
+                const response = await axios.get<VacationsStats>(`/api/vacations/stats/`, { withCredentials: true });
                 const data = response.data;
                 setStats(data);
             } catch (err) {
@@ -45,12 +50,30 @@ const VacationsStatsComponent: React.FC<GeneralProps> = ({ handleLogout }) => {
     if (pastVacations === null || ongoingVacations === null || futureVacations === null) {
         return <div>No stats available</div>;
     }
+    // Prepare data for the bar chart
+    const chartData = [
+        { name: 'Past', value: pastVacations },
+        { name: 'Ongoing', value: ongoingVacations },
+        { name: 'Future', value: futureVacations },
+    ];
     return (
         <div>
             <h2>Vacations Statistics</h2>
             <p>Past Vacations: {pastVacations}</p>
             <p>Ongoing Vacations: {ongoingVacations}</p>
             <p>Future Vacations: {futureVacations}</p>
+            <div style={{ marginTop: 24 }}>
+                <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis allowDecimals={false} />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="value" name="Vacations" fill="#1976d2" />
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     );
 };
