@@ -1,0 +1,13 @@
+# שלב 1: Build Django, collectstatic
+FROM python:3.12-slim AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+RUN python manage.py collectstatic --noinput
+
+# שלב 2: nginx עם קבצי static
+FROM nginx:1.25-alpine
+COPY --from=builder /app/staticfiles /static
+COPY nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80

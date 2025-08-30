@@ -16,10 +16,7 @@ const LogIn = ({ onLoginSuccess }: LogInProps) => {
                 { username, password },
                 { withCredentials: true }
             );
-
-            notyf.success(`Login successful: ${response.data.message}`);
-            localStorage.setItem("access", response.data.access);
-            localStorage.setItem("refresh", response.data.refresh);
+            notyf.success(`Login successful`);
             onLoginSuccess(); // להפעיל אחרי login מוצלח
         } catch (error: any) {
             if (error && error.response && error.response.data && error.response.data.message) {

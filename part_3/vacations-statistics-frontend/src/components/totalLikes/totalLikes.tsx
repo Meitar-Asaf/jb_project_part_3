@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { LikesTotalCountProps } from "../../models/likesTotalCount/likesTotalCount";
-import { fetchWithAuth } from "../../utils/fetchWithAuth";
-
-export const TotalLikesComponent: React.FC = () => {
+import axios from "axios";
+import { notyf } from "../../utils/notyf";
+import { GeneralProps } from "../likesDistribution/LikesDistribution";
+export const TotalLikesComponent: React.FC<GeneralProps> = ({ handleLogout }) => {
     const [totalLikes, setTotalLikes] = useState<LikesTotalCountProps | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -10,9 +11,11 @@ export const TotalLikesComponent: React.FC = () => {
     useEffect(() => {
         const fetchTotalLikes = async () => {
             try {
-                const data = await fetchWithAuth<LikesTotalCountProps>("http://localhost:8000/api/likes/total/");
+                const response = await axios.get<LikesTotalCountProps>("http://localhost:8000/api/likes/total/", { withCredentials: true });
+                const data = response.data;
                 setTotalLikes(data);
             } catch (err) {
+                notyf.error("Failed to fetch total likes");
                 setError("Failed to fetch total likes");
             } finally {
                 setLoading(false);

@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mm4r1+m8*nz3iasf3-t^k%06p_a5=g*lbjxk0wc66#cb$)p*qi'
+SECRET_KEY = 'django-insecure-2v7!$@#1b8^k9zq4w3r6t0p5s2x7c1v4b6n8m0l2k5j3h9g7f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'True')
 
 ALLOWED_HOSTS = []
 
@@ -125,7 +125,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # Or another path where you want collected files
+# Or another path where you want collected files
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = BASE_DIR / 'uploads'
@@ -134,4 +135,6 @@ MEDIA_ROOT = BASE_DIR / 'uploads'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL =  '/'
+LOGIN_REDIRECT_URL = '/'
+SESSION_COOKIE_NAME = 'vacations_website_session_id'
+CSRF_COOKIE_NAME = 'vacations_website_csrftoken'

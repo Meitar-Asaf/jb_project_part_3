@@ -16,20 +16,17 @@ services:
             start_period: 30s
 
     part_2:
-        build:
-            context: ./jbprojectdjango
-            dockerfile: Dockerfile.dev
-        ports:
-            - "8080:8080"
+        image: meitarasaf/vacations_website:latest
         environment:
+            DEBUG: 'False'
             POSTGRES_HOST: database
             POSTGRES_DB: mydatabase
             POSTGRES_USER: user
             POSTGRES_PASSWORD: password
             POSTGRES_PORT: 5432
         command: >
-            sh -c "python manage.py migrate && python manage.py loaddata initial_data &&
-             python manage.py runserver 0.0.0.0:8080"
+                sh -c "python manage.py migrate && python manage.py loaddata initial_data &&
+                gunicorn vacations_project.wsgi:application --bind 0.0.0.0:8080 --workers 1"
         depends_on:
             database:
                 condition: service_healthy
@@ -63,6 +60,15 @@ services:
             - "3000:3000"
         environment:
             REACT_APP_API_URL: http://localhost:8000/
+
+    nginx:
+      build:
+        context: ./jbprojectdjango
+        dockerfile: Dockerfile.nginx
+      ports:
+        - "80:80"
+      depends_on:
+        - part_2
 
 volumes:
     db_data:
