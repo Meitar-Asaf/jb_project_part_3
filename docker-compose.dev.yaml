@@ -46,20 +46,18 @@ services:
         depends_on:
             database:
                 condition: service_healthy
-        volumes:
-            - ./part_3/vacations_statistics_backend:/app/backend
-        command: >
-            sh -c "
-                python manage.py runserver 0.0.0.0:8000"
+        
 
     statistics-frontend:
         build:
             context: ./part_3/vacations-statistics-frontend
             dockerfile: Dockerfile
         ports:
-            - "3000:3000"
+            - "81:80"
         environment:
             REACT_APP_API_URL: http://localhost:8000/
+        depends_on:
+            - statistics-backend
 
     nginx:
       image: meitarasaf/vacations_website_nginx_and_static_files:latest

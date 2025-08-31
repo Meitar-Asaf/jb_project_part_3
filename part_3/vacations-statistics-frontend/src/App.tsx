@@ -7,6 +7,7 @@ import StatisticsPage from './components/statisticsPageComponent/statisticsPageC
 import About from './components/about/about';
 import Home from './components/home/home';
 import Cookies from 'js-cookie';
+import PageNotFound from './PageNotFound';
 
 import axios from 'axios';
 
@@ -65,11 +66,11 @@ function App() {
     return (
         <>
             <nav className="navbar">
-                <span className="navbar-logo" onClick={() => handleNav('/')}>Vacations</span>
+                <span className="navbar-logo" onClick={() => handleNav('/')}>Vacations Statistics</span>
                 <div className="navbar-links">
                     <NavLink to="/" className={({ isActive }) => isActive ? 'navbar-link active' : 'navbar-link'}>Home</NavLink>
                     {isLoggedIn && <NavLink to="/statistics" className={({ isActive }) => isActive ? 'navbar-link active' : 'navbar-link'}>Statistics</NavLink>}
-                    {isLoggedIn && <NavLink to="/about" className={({ isActive }) => isActive ? 'navbar-link active' : 'navbar-link'}>About</NavLink>}
+                    <NavLink to="/about" className={({ isActive }) => isActive ? 'navbar-link active' : 'navbar-link'}>About</NavLink>
                     {!isLoggedIn && <NavLink to="/login" className={({ isActive }) => isActive ? 'navbar-link active' : 'navbar-link'}>Login</NavLink>}
                     {isLoggedIn && <button className="navbar-link-logout" onClick={handleLogout}>Logout</button>}
                 </div>
@@ -83,7 +84,7 @@ function App() {
                 <div className="navbar-mobile-menu">
                     <NavLink to="/" className={({ isActive }) => isActive ? 'navbar-mobile-link active' : 'navbar-mobile-link'} onClick={() => handleNav('/')}>Home</NavLink>
                     {isLoggedIn && <NavLink to="/statistics" className={({ isActive }) => isActive ? 'navbar-mobile-link active' : 'navbar-mobile-link'} onClick={() => handleNav('/statistics')}>Statistics</NavLink>}
-                    {isLoggedIn && <NavLink to="/about" className={({ isActive }) => isActive ? 'navbar-mobile-link active' : 'navbar-mobile-link'} onClick={() => handleNav('/about')}>About</NavLink>}
+                    <NavLink to="/about" className={({ isActive }) => isActive ? 'navbar-mobile-link active' : 'navbar-mobile-link'} onClick={() => handleNav('/about')}>About</NavLink>
                     {!isLoggedIn && <NavLink to="/login" className={({ isActive }) => isActive ? 'navbar-mobile-link active' : 'navbar-mobile-link'} onClick={() => handleNav('/login')}>Login</NavLink>}
                     {isLoggedIn && <button className="navbar-mobile-link-logout" onClick={handleLogout}>Logout</button>}
                 </div>
@@ -94,6 +95,7 @@ function App() {
                     <Route path="/login" element={<LogIn onLoginSuccess={handleLoginSuccess} />} />
                     <Route path="/statistics" element={isLoggedIn ? <StatisticsPage isLoggedIn={isLoggedIn} handleLogout={handleLogout} /> : <Navigate to="/login" />} />
                     <Route path="/about" element={<About />} />
+                    <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </div>
         </>
