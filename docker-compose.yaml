@@ -45,6 +45,8 @@ services:
 
     statistics-frontend:
         image: meitarasaf/statistics_frontend_and_nginx:latest
+        environment:
+            - REACT_APP_VACATIONS_URL=http://52.58.2.223:81/
         depends_on:
             - statistics-backend
 
