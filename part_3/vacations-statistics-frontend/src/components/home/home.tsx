@@ -13,7 +13,7 @@ const Home: React.FC = () => {
                     <h1>Vacations Statistics Project</h1>
                     <p>
                         Welcome to my final project for the Python Full Stack course at John Bryce College.<br />
-                        This web application allows you to explore and analyze vacation data from  <a href="http://localhost:81/">my vacations website</a>.
+                        This web application allows you to explore and analyze vacation data from  <a href="http://main_nginx:81/">my vacations website</a>.
                     </p>
                     <ul className="home-stats-list">
                         <li><strong>Total Likes:</strong> See the total number of likes for all vacations.</li>
