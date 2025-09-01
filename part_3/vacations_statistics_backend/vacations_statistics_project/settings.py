@@ -23,7 +23,15 @@ SECRET_KEY = 'django-insecure-mm4r1+m8*nz3iasf3-t^k%06p_a5=g*lbjxk0wc66#cb$)p*qi
 
 DEBUG = os.getenv('DEBUG', 'False')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '52.58.2.223',
+    'nginx',
+    'part_2',
+    'statistics-frontend',
+    'main_nginx:81'
+]
 
 
 # Application definition
@@ -60,7 +68,15 @@ REST_FRAMEWORK = {
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://localhost:3001"
+    "http://localhost:3001",
+    "http://52.58.2.223",
+    "http://52.58.2.223:81",
+    "http://nginx",
+    "http://part_2",
+    "http://statistics-frontend",
+    "http://localhost:81",
+    "http://main_nginx",
+    "http://localhost:8000",
 ]
 
 ROOT_URLCONF = 'vacations_statistics_project.urls'
@@ -121,7 +137,18 @@ USE_TZ = True
 
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:81"
+    "http://localhost:81",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:3001",
+    "http://52.58.2.223",
+    "http://52.58.2.223:81",
+    "http://nginx",
+    "http://part_2",
+    "http://statistics-frontend",
+    "http://main_nginx"
 ]
 
 STATIC_URL = '/static/'

@@ -19,7 +19,14 @@ export const LikesDistributionComponent: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchLikesDistribution = async () => {
+        /**
+         * Fetches the likes distribution from the backend and updates the component state.
+         * If the fetch fails, sets an error message and notifies the user.
+         *
+         * @async
+         * @returns {Promise<void>}
+         */
+        const fetchLikesDistribution = async (): Promise<void> => {
             try {
                 const response = await axios.get<LikesDistribution[]>(`/api/likes/distribution/`, { withCredentials: true });
                 const data = response.data;

@@ -14,7 +14,13 @@ const PriceRangesComponent: React.FC = () => {
     const [priceRanges, setPriceRanges] = useState<PriceRanges | null>(null);
 
     useEffect(() => {
-        const fetchPriceRanges = async () => {
+        /**
+         * Fetches the count of vacations in different price ranges from the backend and updates the component state.
+         *
+         * @async
+         * @returns {Promise<void>}
+         */
+        const fetchPriceRanges = async (): Promise<void> => {
             const response = await axios.get<PriceRanges>("/api/vacations/price_range", { withCredentials: true });
             setPriceRanges(response.data);
         };

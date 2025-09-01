@@ -24,9 +24,49 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2v7!$@#1b8^k9zq4w3r6t0p5s2x7c1v4b6n8m0l2k5j3h9g7f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'True')
+DEBUG = os.getenv('DEBUG', 'True')
 
-ALLOWED_HOSTS = []
+# Docker/Production: allow all relevant hosts/services
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '52.58.2.223',
+    'nginx',
+    'part_2',
+    'statistics-frontend',
+]
+# CORS and CSRF settings for production
+
+# Docker/Production: allow all relevant origins
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://52.58.2.223',
+    'https://52.58.2.223',
+    'http://nginx',
+    'http://part_2',
+    'http://statistics-frontend',
+    'http://52.58.2.223:81',
+    'http://localhost:81',
+    'http://localhost:8000',
+    'http://main_nginx'
+]
+
+
+# Docker/Production: allow all relevant trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://52.58.2.223',
+    'https://52.58.2.223',
+    'http://nginx',
+    'http://part_2',
+    'http://statistics-frontend',
+    'http://52.58.2.223:81',
+    'http://localhost:81',
+    'http://localhost:8000',
+    'http://main_nginx'
+]
 
 
 # Application definition

@@ -4,33 +4,35 @@ from django.core.exceptions import ValidationError
 from datetime import date
 
 # Create your models here.
-class Country(models.Model):
-    country_name = models.CharField(max_length=100, blank=False, null=False, unique=True)
 
-    def __str__(self):
+
+class Country(models.Model):
+    country_name = models.CharField(
+        max_length=100, blank=False, null=False, unique=True)
+
+    def __str__(self) -> str:
         """
-        Return the name of the country as a string
-        This is used when representing the object in the admin interface
-        or when printing the object
+        Returns the name of the country as a string.
+
+        Returns:
+            str: The country name.
         """
         return self.country_name
-    
-
-    
-    
 
 
 class Vacation(models.Model):
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, blank= False, null=False)
-    description = models.TextField(blank=False, null=False, validators=[MinLengthValidator(10, message="Description must be at least 10 characters")])
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, blank=False, null=False)
+    description = models.TextField(blank=False, null=False, validators=[
+                                   MinLengthValidator(10, message="Description must be at least 10 characters")])
     start_date = models.DateField(blank=False, null=False)
     end_date = models.DateField(blank=False, null=False)
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False)
-    image = models.ImageField(upload_to='vacation_images/', blank=True, null=True)
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=False, null=False)
+    image = models.ImageField(
+        upload_to='vacation_images/', blank=True, null=True)
 
-    def clean(self):
-       
-       
+    def clean(self) -> None:
         """
         This method is called after the model's built-in validation is done, and
         is used to add additional validation to the model.
@@ -46,7 +48,7 @@ class Vacation(models.Model):
         The method is called when the model instance is saved, and is used to
         validate the entire model instance before it is saved to the database.
         """
-       
+
         super().clean()
 
         if not self.pk:
@@ -71,12 +73,10 @@ class Vacation(models.Model):
                 raise ValidationError("Price must be less than 10000")
 
         if self.description and len(self.description) < 10:
-            raise ValidationError("Description must be at least 10 characters long.")
+            raise ValidationError(
+                "Description must be at least 10 characters long.")
 
-        
-        
-    def save(self, *args, **kwargs):
-        
+    def save(self, *args, **kwargs) -> None:
         """
         Override the default save method to call full_clean before saving.
 
@@ -91,10 +91,11 @@ class Vacation(models.Model):
 
         This method is called when the model instance is saved.
         """
-        
+
         self.full_clean()
         super().save(*args, **kwargs)
-    def delete(self, *args, **kwargs):
+
+    def delete(self, *args, **kwargs) -> None:
         """
         Override the default delete method to delete the image as well.
 
@@ -111,16 +112,17 @@ class Vacation(models.Model):
         if self.image:
             self.image.delete(save=False)
         super().delete(*args, **kwargs)
-            
+
     class Meta:
         unique_together = ('country', 'start_date', 'end_date')
         ordering = ['start_date']
 
 
 class Likes(models.Model):
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE,related_name='likes', blank=False, null=False)
-    vacation = models.ForeignKey(Vacation, on_delete=models.CASCADE, related_name='likes', blank=False, null=False)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE,
+                             related_name='likes', blank=False, null=False)
+    vacation = models.ForeignKey(
+        Vacation, on_delete=models.CASCADE, related_name='likes', blank=False, null=False)
 
     class Meta:
         unique_together = ('user', 'vacation')
-

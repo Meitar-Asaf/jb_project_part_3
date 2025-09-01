@@ -82,7 +82,7 @@ function App() {
             </nav>
             {menuOpen && (
                 <div className="navbar-mobile-menu">
-                    <NavLink to="/" className={({ isActive }) => isActive ? 'navbar-mobile-link active' : 'navbar-mobile-link'} onClick={() => handleNav('/')}>Home</NavLink>
+                    <NavLink to="/statistics" className={({ isActive }) => isActive ? 'navbar-mobile-link active' : 'navbar-mobile-link'} onClick={() => handleNav('/statistics')}>Home</NavLink>
                     {isLoggedIn && <NavLink to="/statistics" className={({ isActive }) => isActive ? 'navbar-mobile-link active' : 'navbar-mobile-link'} onClick={() => handleNav('/statistics')}>Statistics</NavLink>}
                     <NavLink to="/about" className={({ isActive }) => isActive ? 'navbar-mobile-link active' : 'navbar-mobile-link'} onClick={() => handleNav('/about')}>About</NavLink>
                     {!isLoggedIn && <NavLink to="/login" className={({ isActive }) => isActive ? 'navbar-mobile-link active' : 'navbar-mobile-link'} onClick={() => handleNav('/login')}>Login</NavLink>}
@@ -95,7 +95,7 @@ function App() {
                     <Route path="/login" element={<LogIn onLoginSuccess={handleLoginSuccess} />} />
                     <Route path="/statistics" element={isLoggedIn ? <StatisticsPage isLoggedIn={isLoggedIn} handleLogout={handleLogout} /> : <Navigate to="/login" />} />
                     <Route path="/about" element={<About />} />
-                    <Route path="*" element={<PageNotFound />} />
+                    <Route path="/*" element={<PageNotFound />} />
                 </Routes>
             </div>
         </>

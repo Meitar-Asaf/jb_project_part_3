@@ -10,9 +10,15 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 class VacationsStats(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
 
-    def get(self, request):
+    def get(self, request) -> Response:
         """
-        API view to return vacation statistics.
+        Returns vacation statistics (past, ongoing, future).
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: JSON response with vacation statistics.
         """
         queryset = Vacation.objects.all()
         today = datetime.now().date()
@@ -31,9 +37,15 @@ class VacationsStats(APIView):
 class LikesTotalView(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
 
-    def get(self, request):
+    def get(self, request) -> Response:
         """
-        API view to return the total number of likes.
+        Returns the total number of likes.
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: JSON response with total likes.
         """
         total_likes = Likes.objects.count()
         return Response({'total_likes': total_likes})
@@ -42,26 +54,34 @@ class LikesTotalView(APIView):
 class LikesDistributionView(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
 
-    def get(self, request):
+    def get(self, request) -> Response:
         """
         Retrieves the distribution of likes among countries.
 
-        Returns a JSON response containing a list of dictionaries where each
-        dictionary contains the country name and the number of likes for that
-        country.
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: JSON response with a list of countries and their like counts.
         """
         likes_distribution = Country.objects.annotate(
             likes_count=Count('vacation__likes')
         ).values('country_name', 'likes_count')
         return Response(list(likes_distribution))
-    
+
 
 class VacationsByPriceRangeView(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
 
-    def get(self, request):
+    def get(self, request) -> Response:
         """
-        API view to return the number of vacations in different price ranges.
+        Returns the number of vacations in different price ranges.
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: JSON response with vacation counts by price range.
         """
         price_ranges = {
             '0-3000': Vacation.objects.filter(price__range=(0, 3000)).count(),

@@ -17,12 +17,13 @@ const VacationsStatsComponent: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     useEffect(() => {
         /**
-         * Fetches the vacation statistics from the backend and updates the
-         * component state with the fetched data. If the fetch fails, it sets
-         * the error state to the error message. Finally, it sets the loading
-         * state to false.
+         * Fetches the vacation statistics from the backend and updates the component state.
+         * If the fetch fails, sets an error message. Finally, sets loading to false.
+         *
+         * @async
+         * @returns {Promise<void>}
          */
-        const fetchStats = async () => {
+        const fetchStats = async (): Promise<void> => {
             try {
                 const response = await axios.get<VacationsStats>(`/api/vacations/stats/`, { withCredentials: true });
                 const data = response.data;

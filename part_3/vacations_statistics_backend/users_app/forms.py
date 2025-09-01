@@ -2,16 +2,26 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-class UserRegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, label='First Name', required= True, widget=forms.TextInput(attrs={'placeholder': 'First Name', 'type': 'text', 'class': 'form-control'}))
-    last_name = forms.CharField(max_length=30, label='Last Name', required= True, widget=forms.TextInput(attrs={'placeholder': 'Last Name', 'type': 'text', 'class': 'form-control'}))
-    email = forms.EmailField(required=True,  label='Email', widget=forms.EmailInput(attrs={'placeholder': 'Email', 'type': 'email', 'class': 'form-control'}))
 
-    def save(self, commit=True):
+class UserRegisterForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, label='First Name', required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'First Name', 'type': 'text', 'class': 'form-control'}))
+    last_name = forms.CharField(max_length=30, label='Last Name', required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Last Name', 'type': 'text', 'class': 'form-control'}))
+    email = forms.EmailField(required=True,  label='Email', widget=forms.EmailInput(
+        attrs={'placeholder': 'Email', 'type': 'email', 'class': 'form-control'}))
+
+    def save(self, commit: bool = True) -> User:
         """
         Save the user instance. Use the ``commit`` kwarg to enable/disable
         saving the user to the database. This is useful if you want to add
         additional data to the user (e.g. a profile) before saving.
+
+        Args:
+            commit (bool): Whether to save the user to the database immediately.
+
+        Returns:
+            User: The created user instance.
         """
         user = super(UserRegisterForm, self).save(commit=False)
         user.first_name = self.cleaned_data['first_name']
@@ -21,11 +31,16 @@ class UserRegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
-    def __init__(self, *args, **kwargs):
+
+    def __init__(self, *args, **kwargs) -> None:
         """
         Overwrite the default init method to remove the help_text attribute
         of password1 and password2 fields. This is because the default help_text
         is too long and we don't want to display it in the form.
+
+        Args:
+            *args: Positional arguments.
+            **kwargs: Keyword arguments.
         """
         super().__init__(*args, **kwargs)
         self.fields['password1'].help_text = ''
@@ -43,26 +58,25 @@ class UserRegisterForm(UserCreationForm):
             'required': 'required',
             'type': 'password',
         })
-        
-        
+
     class Meta:
         model = User
-        fields = ['first_name', 'last_name','email', 'password1', 'password2']
-    def clean_email(self):
+        fields = ['first_name', 'last_name', 'email', 'password1', 'password2']
+
+    def clean_email(self) -> str:
         """
         Cleans the email field by checking if the email already exists in the database.
         If it does, a forms.ValidationError is raised with the message "Email already exists".
         Otherwise, the email is returned as is.
+
+        Returns:
+            str: The cleaned email address.
         """
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("Email already exists")
         return email
-    
+
+
 class UserLoginForm(AuthenticationForm):
     username = forms.EmailField(label='Email')
-
-
-    
-
-

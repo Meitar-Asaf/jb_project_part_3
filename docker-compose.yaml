@@ -6,8 +6,6 @@ services:
             POSTGRES_DB: mydatabase
             POSTGRES_USER: user
             POSTGRES_PASSWORD: password
-        volumes:
-            - db_data:/var/lib/postgresql/data
         healthcheck:
             test: [ "CMD-SHELL", "pg_isready -d mydatabase -U user" ]
             interval: 10s
@@ -32,12 +30,9 @@ services:
                 condition: service_healthy
 
     statistics-backend:
-        build:
-            context: ./part_3/vacations_statistics_backend
-            dockerfile: Dockerfile
-        ports:
-            - "8000:8000"
+        image: meitarasaf/statistics_backend:latest
         environment:
+            DEBUG: 'False'
             POSTGRES_HOST: database
             POSTGRES_DB: mydatabase
             POSTGRES_USER: user
@@ -49,22 +44,21 @@ services:
         
 
     statistics-frontend:
-        build:
-            context: ./part_3/vacations-statistics-frontend
-            dockerfile: Dockerfile
-        ports:
-            - "81:80"
-        environment:
-            REACT_APP_API_URL: http://localhost:8000/
+        image: meitarasaf/statistics_frontend_and_nginx:latest
         depends_on:
             - statistics-backend
 
-    nginx:
+    part_2_nginx_staticfiles:
       image: meitarasaf/vacations_website_nginx_and_static_files:latest
-      ports:
-        - "80:80"
+      
       depends_on:
         - part_2
 
-volumes:
-    db_data:
+    main_nginx:
+      image: meitarasaf/main_nginx:latest
+      ports:
+        - "80:80"
+        - "81:81"
+      depends_on:
+        - part_2_nginx_staticfiles
+        - statistics-frontend

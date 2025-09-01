@@ -15,7 +15,14 @@ export const TotalLikesComponent: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchTotalLikes = async () => {
+        /**
+         * Fetches the total number of likes from the backend and updates the component state.
+         * If the fetch fails, sets an error message and notifies the user.
+         *
+         * @async
+         * @returns {Promise<void>}
+         */
+        const fetchTotalLikes = async (): Promise<void> => {
             try {
                 const response = await axios.get<LikesTotalCountProps>("/api/likes/total/", { withCredentials: true });
                 const data = response.data;
