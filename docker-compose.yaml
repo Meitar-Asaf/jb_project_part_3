@@ -60,7 +60,7 @@ services:
       image: meitarasaf/main_nginx:latest
       ports:
         - "80:80"
-        - "81:81"
+        - "8000:81"
       depends_on:
         - part_2_nginx_staticfiles
         - statistics-frontend
